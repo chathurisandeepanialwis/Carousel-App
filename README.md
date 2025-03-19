@@ -1,4 +1,4 @@
-# 🖼️ Building a Dynamic Carousel Component with Shadcn UI, ViteJS, TailwindCSS, and ReactJS (with TypeScript) 🚀
+# 🖼️ Building a Dynamic Carousel Component with Shadcn UI, Vite, TailwindCSS, and React (with TypeScript) 🚀
 
 This repository demonstrates how to create a dynamic and interactive carousel component using modern web development technologies.
 
