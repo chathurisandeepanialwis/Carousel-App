@@ -1,9 +1,4 @@
-import {
-  Carousel,
-  CarouselApi,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
+import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "./components/ui/button";
@@ -12,17 +7,15 @@ export const CustomCarousel = () => {
   const [carouselAPI, setCarouselAPI] = useState<CarouselApi | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
-  const [isAutoplayPaused, setIsAutoplayPaused] = useState(false); // Add state for autoplay pause
+  const [isAutoplayPaused, setIsAutoplayPaused] = useState(false); 
 
   const onSelect = useCallback(() => {
     if (!carouselAPI) return;
-
     setSelectedIndex(carouselAPI.selectedScrollSnap());
   }, [carouselAPI]);
 
   const scrollTo = (index: number) => {
     if (!carouselAPI) return;
-
     carouselAPI.scrollTo(index);
     setIsAutoplayPaused(true); 
   };
@@ -30,24 +23,36 @@ export const CustomCarousel = () => {
   const scrollPrev = () => {
     if (!carouselAPI) return;
     carouselAPI.scrollPrev();
-    setIsAutoplayPaused(true);
+    setIsAutoplayPaused(true); 
   };
 
   const scrollNext = () => {
     if (!carouselAPI) return;
     carouselAPI.scrollNext();
-    setIsAutoplayPaused(true);
+    setIsAutoplayPaused(true); 
   };
 
   useEffect(() => {
     if (!carouselAPI) return;
-
     onSelect();
-
     setScrollSnaps(carouselAPI.scrollSnapList());
-
     carouselAPI.on("select", onSelect);
   }, [carouselAPI, onSelect]);
+
+  useEffect(() => {
+    if (!carouselAPI) return;
+
+    const autoplayInstance = Autoplay({
+      delay: 2500,
+      stopOnInteraction: false, 
+    });
+
+    autoplayInstance.options.stopOnInteraction = isAutoplayPaused;
+
+    return () => {
+      autoplayInstance.options.stopOnInteraction = true; 
+    };
+  }, [carouselAPI, isAutoplayPaused]); 
 
   const imagePaths = [
     "https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?q=80&w=1992&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -57,13 +62,12 @@ export const CustomCarousel = () => {
     "https://images.unsplash.com/photo-1591561582301-7ce6588cc286?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cmFiYml0fGVufDB8MHwwfHx8Mg%3D%3D",
     "https://images.pexels.com/photos/5264087/pexels-photo-5264087.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     "https://images.unsplash.com/photo-1554692918-08fa0fdc9db3?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGN1dGUlMjBwZXR8ZW58MHwwfDB8fHwy",
-    
   ];
 
   return (
     <div className="relative">
       <Carousel
-        plugins={[Autoplay({ delay: 2500, stopOnInteraction: false, disabled: isAutoplayPaused })]}
+        plugins={[]} 
         opts={{ loop: true, align: "center" }}
         setApi={setCarouselAPI}
       >
